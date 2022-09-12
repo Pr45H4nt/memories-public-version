@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{m.title}}
+{% endblock title %}
+{% load humanize %}
+
+{% block content %}
+<div class="container border shadow-lg p-3 mb-5 bg-white rounded">
+
+    <h5>{{m.title}}</h5>
+    <p> {{m.content}}</p>
+    {{m.created_date|naturaltime}}
+<br><br>
+
+{% if m.user == request.user %}
+    
+<a href="{% url 'editmem' slug=m.slug %}"><button class="btn btn-secondary">Edit</button></a> &nbsp;
+<a href="{% url 'deletemem' slug=m.slug %}"><button class="btn btn-secondary">Delete</button></a>
+{% endif %}
+    
+</div>
+
+<h4>comments</h4>
+<hr>
+<center>
+{% for c in comments %}
+
+   <h5> Posted by {{c.User}} <br></h5>
+    <p>{{c.comment}}</p>
+    {{c.created_date}}
+    <br> <br> <br> <hr>
+{% endfor %}
+<br> <br>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" name = "comment" placeholder="Post Your Comment">
+        <input type="submit" value="POST">
+    </form>
+    <br>
+</center>
+{% endblock content %}
+    
+    
